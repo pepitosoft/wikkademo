@@ -3056,6 +3056,21 @@ class Wakka
 	}
 
 	/**
+	 * Output the header for Wikka-pages.
+	 *
+	 * @uses	Wakka::GetThemePath()
+	 * @uses	Wakka::IncludeBuffered()
+	 * @return	mixed string with the header of a wikka-page, string with an error-message or FALSE.
+	 */
+	function HeaderMl()
+	{
+		$filename = 'headermd.php';
+		$path = $this->GetThemePath();
+		$header = $this->IncludeBuffered($filename, T_("A header template could not be found. Please make sure that a file called <code>header.php</code> exists in the templates directory."), '', $path);
+		return $header;
+	}
+
+	/**
 	 * Output the footer for Wikka-pages.
 	 *
 	 * @uses	Wakka::GetThemePath()
@@ -5165,12 +5180,9 @@ class Wakka
 			header('Content-type: text/html');
 			print($this->Handler($this->GetHandler()));
 		}
-		elseif($this->GetHandler() == 'reveal')
-		{
-			print($this->Handler($this->GetHandler()));
-		}
 		elseif( $this->GetHandler() == 'show' && pathinfo($this->GetPageTag(), PATHINFO_EXTENSION) == 'md' && $this->page['body'] != '' )
 		{
+			// Hugly handler but util.
 			$this->Handler($this->handler = 'md');
 			echo $this->Header();
 			echo $this->Handler($this->GetHandler());
